@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import haven.automation.AutoKin;
 import haven.automation.ErrorSysMsgCallback;
 import haven.automation.PickForageable;
 import haven.livestock.LivestockManager;
@@ -1260,6 +1261,10 @@ public class GameUI extends ConsoleHost implements Console.Directory {
             Config.autodrink = !Config.autodrink;
             Utils.setprefb("autodrink", Config.autodrink);
             msg("Autodrink " + (Config.autodrink?"Enabled!":"Disabled!"), Color.white);
+            return true;
+        } else if (ev.isControlDown() && ev.getKeyCode() == KeyEvent.VK_K){
+            Thread t = new Thread(new AutoKin(this), "AutoKin");
+            t.start();
             return true;
         }
         return (super.globtype(key, ev));

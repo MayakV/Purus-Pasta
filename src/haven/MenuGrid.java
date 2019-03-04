@@ -46,6 +46,7 @@ import java.util.WeakHashMap;
 import haven.Resource.AButton;
 import haven.automation.AddBranchesToOven;
 import haven.automation.AddCoalToSmelter;
+import haven.automation.AutoKin;
 import haven.automation.ButcherFish;
 import haven.automation.Dismount;
 import haven.automation.DreamHarvester;
@@ -314,6 +315,8 @@ public class MenuGrid extends Widget {
             p.add(paginafor(Resource.local().load("paginae/purus/transferToObject")));
             // PBot Scripts
             p.add(paginafor(Resource.local().load("paginae/purus/PBotMenu")));
+            // Mayak
+            p.add(paginafor(Resource.local().load("paginae/amber/autokin")));
         }
     }
 
@@ -513,6 +516,8 @@ public class MenuGrid extends Widget {
             new Thread(new EquipWeapon(gui), "EquipWeapon").start();
         } else if (ad[1].equals("dismount")) {
             new Thread(new Dismount(gui), "Dismount").start();
+        } else if (ad[1].equals("autokin")) {
+            new Thread(new AutoKin(gui), "AutoKin").start();          
         } else if(ad[1].equals("farmbot")) {
         	Farmer f = new Farmer();
         	Window w = f;

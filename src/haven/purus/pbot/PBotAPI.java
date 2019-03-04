@@ -4,7 +4,7 @@ import haven.Window;
 import haven.*;
 import haven.automation.GobSelectCallback;
 import haven.purus.BotUtils;
-import haven.purus.gobText;
+//import haven.purus.gobText;
 
 import javax.script.Invocable;
 import javax.script.ScriptException;
@@ -74,6 +74,33 @@ public class PBotAPI {
 	public static void doClick(Gob gob, int button, int mod) {
 		gui.map.wdgmsg("click", Coord.z, gob.rc.floor(posres), button, 0, mod, (int) gob.id, gob.rc.floor(posres), 0,
 				-1);
+	}
+	
+	/**
+	 * Click an overlay of an object
+	 * @param gob Gob to click
+	 * @param button 1 = Left click, 3 = Right click
+	 * @param mod 1 = shift, 2 = ctrl, 4 = alt
+	 * @param olName Name of an overlay
+	 */
+	public static void doClickOverlay(Gob gob, int button, int mod, String olName) {
+		Gob.Overlay overlay = null;
+		for(Gob.Overlay o:gob.ols) {
+            try {
+                if(o.res != null && o.res.get() != null)
+					if(o.res.get().name.equals(olName))
+						overlay = o;
+                		gui.msg(o.res.get().name + "found", new Color(250, 65, 0));
+            } catch(Loading l) {
+
+            }
+        }
+		if (overlay != null) {
+			gui.map.wdgmsg("click", Coord.z, gob.rc.floor(posres), button, 0, mod, (int) gob.id, gob.rc.floor(posres), (int) overlay.id,
+					-1);
+		} else {
+			sysMsg("No overlay found!", Color.ORANGE);
+		}		
 	}
 	
 	/**
