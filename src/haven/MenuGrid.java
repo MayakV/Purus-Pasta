@@ -519,7 +519,7 @@ public class MenuGrid extends Widget {
         } else if (ad[1].equals("autokin")) {
             new Thread(new AutoKin(gui), "AutoKin").start();          
         } else if(ad[1].equals("farmbot")) {
-        	Farmer f = new Farmer();
+        	Farmer f = new Farmer();	
         	Window w = f;
         	gui.add(w, new Coord(gui.sz.x/2 - w.sz.x/2, gui.sz.y/2 - w.sz.y/2 - 200));
             synchronized (GobSelectCallback.class) {
