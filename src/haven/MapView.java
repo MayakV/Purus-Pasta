@@ -26,28 +26,6 @@
 
 package haven;
 
-import static haven.MCache.tilesz;
-import static haven.OCache.posres;
-
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.WeakHashMap;
-
-import javax.media.opengl.GL;
-
 import haven.GLProgram.VarID;
 import haven.automation.AreaSelectCallback;
 import haven.automation.GobSelectCallback;
@@ -55,8 +33,20 @@ import haven.automation.MusselPicker;
 import haven.automation.SteelRefueler;
 import haven.pathfinder.PFListener;
 import haven.pathfinder.Pathfinder;
-import haven.purus.pbot.PBotAPI;
+import haven.purus.pbot.PBotUtils;
 import haven.resutil.BPRadSprite;
+
+import javax.media.opengl.GL;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+
+import static haven.MCache.tilesz;
+import static haven.OCache.posres;
 
 public class MapView extends PView implements DTarget, Console.Directory, PFListener {
     public static boolean clickdb = false;
@@ -100,6 +90,7 @@ public class MapView extends PView implements DTarget, Console.Directory, PFList
     public static final Material.Colors markedFx = new Material.Colors(new Color(21, 127, 208, 255));
     public Object[] lastItemactClickArgs;
     private static TexCube sky = new TexCube(Resource.loadimg("skycube"));
+    private static DropSky skydrop = new DropSky(sky);
     public boolean farmSelect = false;
     public boolean PBotAPISelect = false;
     public haven.purus.pathfinder.Pathfinder pastaPathfinder;
@@ -1038,8 +1029,9 @@ public class MapView extends PView implements DTarget, Console.Directory, PFList
     	            }
     	        }
             }
-            if(skyb)
-            	rl.add(new DropSky(sky), Rendered.last);
+            if(skyb) {
+                rl.add(skydrop, Rendered.last);
+            }
         }
     }
 
@@ -2033,9 +2025,21 @@ public class MapView extends PView implements DTarget, Console.Directory, PFList
                                     for(Gob.Overlay o:inf.gob.ols) {
                                         try {
                                             if(o.res != null && o.res.get() != null)
-                                                tooltip += String.format("\n" + o.res.get().name);
+                                                tooltip += String.format("\noverlay: " + o.res.get().name);
                                         } catch(Loading l) {
 
+                                        }
+                                    }
+                                    Drawable d = inf.gob.getattr(Drawable.class);
+
+                                    if(d instanceof Composite) {
+                                        Composite comp = (Composite)d;
+                                        for(ResData rd:comp.prevposes) {
+                                            try {
+                                                tooltip += String.format("\npose: " + rd.res.get().name);
+                                            } catch(Loading l) {
+
+                                            }
                                         }
                                     }
                                     return;
@@ -2318,7 +2322,7 @@ public class MapView extends PView implements DTarget, Console.Directory, PFList
                     wdgmsg("sel", sc, ec, modflags);
                     sc = null;
                     if(PBotAPISelect) {
-                    	PBotAPI.areaSelect(ol.getc1(), ol.getc2());
+                    	PBotUtils.areaSelect(ol.getc1(), ol.getc2());
                     	PBotAPISelect = false;
                         selection.destroy();
                         selection = null;}
