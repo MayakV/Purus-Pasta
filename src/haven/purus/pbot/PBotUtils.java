@@ -31,7 +31,7 @@ public class PBotUtils {
 	}
 
 	/**
-	 * Right click a gob with pathfinder (from Purus), wait until pathfinder is finished
+	 * Right click a gob with pathfinder, wait until pathfinder is finished
 	 * @param gob Gob to right click
 	 * @param mod 1 = shift, 2 = ctrl, 4 = alt
 	 */
@@ -43,24 +43,7 @@ public class PBotUtils {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Right click a gob with pathfinder (from Amber)
-	 * @param gob Gob to right click
-	 * @param mod 1 = shift, 2 = ctrl, 4 = alt
-	 */
-	public static void pRightClick(Gob gob, int mod) {
-		gui.map.pfRightClick(gob, -1, 3, mod, null);
-	}
-	
-	/**
-	 * Left click to somewhere with pathfinder (from Amber)
-	 * @param x X-Coordinate
-	 * @param y Y-Coordinate
-	 */
-	public static void pLeftClick(int x, int y) {
-		gui.map.pfLeftClick(new Coord(x, y), null);
-	}
+
 
 	/**
 	 * Chooses a petal with given label from a flower menu that is currently open
